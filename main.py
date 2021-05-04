@@ -68,8 +68,6 @@ def hdl_request(place, week_no):
     print('No. of centers with open slots for age 18+: ', no_vacc_centers_18yo)
     if no_vacc_centers_18yo > 0:
         for i in ref_id_age:
-            pincode = data["centers"][i]["pincode"]
-            if pincode < 400800:
                 audio_alert()
                 print(data["centers"][i])
 
