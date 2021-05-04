@@ -13,21 +13,25 @@ from requests.models import to_native_string
 from requests.sessions import session
 
 BLR = '294'
-BangaloreRural='276'
-BangaloreUrban='265'
+BangaloreRural = '276'
+BangaloreUrban = '265'
 
 pygame.init()
 pygame.mixer.init()
-sounda= pygame.mixer.Sound("beep-01a.wav")
+sounda = pygame.mixer.Sound("beep-01a.wav")
+
+
 def audio_alert():
     sounda.play()
 
+
 def hdl_time(week_no):
     today = datetime.date.today()
-    next_date = today + datetime.timedelta(weeks = week_no)
-    next_date= next_date.strftime('%d-%m-%Y')
+    next_date = today + datetime.timedelta(weeks=week_no)
+    next_date = next_date.strftime('%d-%m-%Y')
     chk_date = str(next_date)
     return chk_date
+
 
 def hdl_request(place, week_no):
     preamble = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id='
@@ -45,8 +49,8 @@ def hdl_request(place, week_no):
     ref_id = []
     ref_id_age = []
 
-    for i in range(0,no_of_centers):
-        
+    for i in range(0, no_of_centers):
+
         sample = data["centers"][i]
         sessions_data = sample["sessions"]
         sessions_data = sessions_data[0]
@@ -69,23 +73,26 @@ def hdl_request(place, week_no):
                 audio_alert()
                 print(data["centers"][i])
 
+
 if __name__ == "__main__":
-    no_of_weeks = 10 
+    no_of_weeks = 10
     while True:
         print('***********************************************')
         print('Checking for free slots in BLR-BBMP at', datetime.datetime.now())
         print('***********************************************')
         for week in range(0, no_of_weeks):
             hdl_request(BLR, week)
+
         print('***********************************************')
         print('Checking for free slots in BLR-URBAN at', datetime.datetime.now())
         print('***********************************************')
         for week in range(0, no_of_weeks):
-            hdl_request(BLR, week)
+            hdl_request(BangaloreUrban, week)
+
         print('***********************************************')
         print('Checking for free slots in BLR-RURAL at', datetime.datetime.now())
         print('***********************************************')
         for week in range(0, no_of_weeks):
-            hdl_request(BLR, week)
+            hdl_request(BangaloreRural, week)
 
         time.sleep(30)
