@@ -21,6 +21,26 @@ pygame.mixer.init()
 sounda = pygame.mixer.Sound("beep-01a.wav")
 
 
+headers = {
+    ':authority': 'cdn-api.co-vin.in',
+    ':method': 'GET',
+    ':scheme': 'https',
+    'accept': 'application/json, text/plain, */*',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
+    'dnt': '1',
+    'if-none-match': 'W/"2a609-8B8UNv2+uURxPaIuHDntG9G6k6c"',
+    'origin': 'https://www.cowin.gov.in',
+    'referer': 'https://www.cowin.gov.in/',
+    'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'cross-site',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
+}
+
+
 def audio_alert():
     sounda.play()
 
@@ -36,7 +56,25 @@ def hdl_time(week_no):
 def hdl_request(place, week_no):
     preamble = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id='
     link = preamble + place + '&date=' + hdl_time(week_no)
-    response = requests.get(link)
+    response = requests.get(link, headers={
+        # ':authority': 'cdn-api.co-vin.in',
+        # ':method': 'GET',
+        # ':scheme': 'https',
+        'accept': 'application/json, text/plain, */*',
+        'accept-encoding': 'gzip, deflate, br',
+        'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
+        'dnt': '1',
+        'if-none-match': 'W/"2a609-8B8UNv2+uURxPaIuHDntG9G6k6c"',
+        'origin': 'https://www.cowin.gov.in',
+        'referer': 'https://www.cowin.gov.in/',
+        'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'cross-site',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
+    })
+    print(response)
     #response = requests.get('https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=395&date=02-05-2021')
     print('-------------------------------------------')
     print('Checking for week starting: ', hdl_time(week_no))
@@ -68,8 +106,8 @@ def hdl_request(place, week_no):
     print('No. of centers with open slots for age 18+: ', no_vacc_centers_18yo)
     if no_vacc_centers_18yo > 0:
         for i in ref_id_age:
-                audio_alert()
-                print(data["centers"][i])
+            audio_alert()
+            print(data["centers"][i])
 
 
 if __name__ == "__main__":
